@@ -12,9 +12,9 @@ public class CreateAuthorTests extends BaseTest {
 
     @Test
     public void createAuthor_shouldReturn200AndAuthorId() {
-        logger.info("Running happy path: create author");
+        logger.info("Scenario: Successfully add a new author with valid data");
 
-        Author author = new Author(0, 1, "John", "Tester");
+        Author author = new Author(0, 1, "Dimitris", "Karakasidis");
         Response response = AuthorEndpoints.createAuthor(author);
 
         logger.debug("Response: " + response.asPrettyString());

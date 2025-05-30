@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 /**
  * TestLogger is a lightweight logging utility that supports per-class log files,
@@ -16,7 +17,31 @@ import java.time.LocalDateTime;
  */
 public class TestLogger {
 
+
     private static final ThreadLocal<TestLogger> threadLocalLogger = new ThreadLocal<>();
+
+    private final ConcurrentLinkedDeque<String> messages = new ConcurrentLinkedDeque<>();
+    private final Thread loggerThread = new Thread(this::loggerLoop);
+    private boolean enabled = true;
+
+    public void log(String message) {
+        messages.offer(message);
+    }
+
+    public void setEnabledFalse() {
+        while(!messages.isEmpty()) {
+        }
+        enabled = false;
+    }
+
+    private void loggerLoop() {
+        while (this.enabled) {
+            if (!messages.isEmpty()) {
+                String message = messages.poll();
+                _log(currentLevel,  message);
+            }
+        }
+    }
 
     /**
      * Sets the TestLogger for the current thread.
@@ -92,7 +117,7 @@ public class TestLogger {
      * @param msg The message to log
      */
     public void info(String msg) {
-        log(LogLevel.INFO, msg);
+        _log(LogLevel.INFO, msg);
     }
 
     /**
@@ -101,7 +126,7 @@ public class TestLogger {
      * @param msg The message to log
      */
     public void debug(String msg) {
-        log(LogLevel.DEBUG, msg);
+        _log(LogLevel.DEBUG, msg);
     }
 
     /**
@@ -110,7 +135,7 @@ public class TestLogger {
      * @param msg The message to log
      */
     public void error(String msg) {
-        log(LogLevel.ERROR, msg);
+        _log(LogLevel.ERROR, msg);
     }
 
     /**
@@ -119,7 +144,7 @@ public class TestLogger {
      * @param level The log level of the message
      * @param msg   The message to log
      */
-    private void log(LogLevel level, String msg) {
+    private void _log(LogLevel level, String msg) {
         if (level.ordinal() <= currentLevel.ordinal()) {
             String line = String.format("%s [%s] %s - %s",
                     LocalDateTime.now(), level, className, msg);

@@ -28,8 +28,6 @@ public class ConfigManager {
         try (FileInputStream fileInputStream = new FileInputStream(configFile)) {
             properties.load(fileInputStream);
 
-            // Add log something like [ConfigManager] Loaded config configFile
-
         } catch (IOException e) {
             throw new RuntimeException("Failed to load config file: " + configFile, e);
         }
@@ -78,17 +76,6 @@ public class ConfigManager {
     public int getIntProperty(String key) {
 
         return Integer.parseInt(getProperty(key));
-    }
-
-    /**
-     * Retrieves the value of a given property key as a boolean.
-     *
-     * @param key the name of the property
-     * @return the property value as a boolean
-     */
-    public boolean getBooleanProperty(String key) {
-
-        return Boolean.parseBoolean(getProperty(key));
     }
 
     /**

@@ -70,4 +70,9 @@ public class BaseTest {
         logger.info("========== Ending Test: " + testInfo.getDisplayName() + " ==========");
         logger.close();
     }
+
+    @AfterAll
+    public void tearDownFramework() {
+        logger.setEnabledFalse();
+    }
 }
