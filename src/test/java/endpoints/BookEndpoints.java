@@ -15,9 +15,9 @@ import static io.restassured.RestAssured.given;
 public class BookEndpoints {
 
     private static final String ENDPOINT = ConfigManager.getInstance().getProperty("books.endpoint");
-    private static final TestLogger logger = new TestLogger(BookEndpoints.class);
 
     public static Response getAllBooks() {
+        TestLogger logger = TestLogger.getThreadLogger();
         logger.info("Sending GET request to fetch all books");
         logger.info("Request URI: " + RestAssured.baseURI + ENDPOINT);
 
@@ -30,9 +30,11 @@ public class BookEndpoints {
     }
 
     public static Response getBookById(int id) {
-        String url = ENDPOINT + "/" + id;
+        TestLogger logger = TestLogger.getThreadLogger();
         logger.info("Fetching book by ID: " + id);
         logger.info("Request URI: " + RestAssured.baseURI + ENDPOINT);
+
+        String url = ENDPOINT + "/" + id;
 
         return given()
                 .accept(ContentType.JSON)
@@ -43,8 +45,10 @@ public class BookEndpoints {
     }
 
     public static Response getBookById(String id) {
-        String url = ENDPOINT + "/" + id;
+        TestLogger logger = TestLogger.getThreadLogger();
         logger.info("Fetching book by ID (string): " + id);
+
+        String url = ENDPOINT + "/" + id;
 
         return given()
                 .accept(ContentType.JSON)
@@ -56,6 +60,7 @@ public class BookEndpoints {
 
 
     public static Response createBook(Book book) {
+        TestLogger logger = TestLogger.getThreadLogger();
         logger.info("Creating book: " + book.getTitle());
 
         return given()
@@ -68,9 +73,11 @@ public class BookEndpoints {
     }
 
     public static Response updateBook(int id, Book book) {
-        String url = ENDPOINT + "/" + id;
+        TestLogger logger = TestLogger.getThreadLogger();
         logger.info("Updating book with ID: " + id);
         logger.debug("Updating book: " + book.getTitle());
+
+        String url = ENDPOINT + "/" + id;
 
         return given()
                 .contentType(ContentType.JSON)
@@ -82,9 +89,11 @@ public class BookEndpoints {
     }
 
     public static Response deleteBook(int id) {
-        String url = ENDPOINT + "/" + id;
+        TestLogger logger = TestLogger.getThreadLogger();
         logger.info("Deleting book with ID: " + id);
         logger.info("Request URI: " + RestAssured.baseURI + ENDPOINT);
+
+        String url = ENDPOINT + "/" + id;
 
         return given()
                 .when()
@@ -94,9 +103,11 @@ public class BookEndpoints {
     }
 
     public static Response deleteBook(String id) {
-        String url = ENDPOINT + "/" + id;
+        TestLogger logger = TestLogger.getThreadLogger();
         logger.info("Deleting book with ID: " + id);
         logger.info("Request URI: " + RestAssured.baseURI + ENDPOINT);
+
+        String url = ENDPOINT + "/" + id;
 
         return given()
                 .when()

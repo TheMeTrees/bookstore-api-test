@@ -14,9 +14,9 @@ import static io.restassured.RestAssured.given;
 public class AuthorEndpoints {
 
     private static final String ENDPOINT = ConfigManager.getInstance().getProperty("authors.endpoint");
-    private static final TestLogger logger = new TestLogger(AuthorEndpoints.class);
 
     public static Response getAllAuthors() {
+        TestLogger logger = TestLogger.getThreadLogger();
         logger.info("Sending GET request to fetch all authors");
 
         return given()
@@ -28,8 +28,10 @@ public class AuthorEndpoints {
     }
 
     public static Response getAuthorById(int id) {
-        String url = ENDPOINT + "/" + id;
+        TestLogger logger = TestLogger.getThreadLogger();
         logger.info("Fetching author by ID: " + id);
+
+        String url = ENDPOINT + "/" + id;
 
         return given()
                 .accept(ContentType.JSON)
@@ -40,6 +42,7 @@ public class AuthorEndpoints {
     }
 
     public static Response createAuthor(Author author) {
+        TestLogger logger = TestLogger.getThreadLogger();
         logger.info("Creating author: " + author.getFirstName() + " " + author.getLastName());
 
         return given()
@@ -52,8 +55,10 @@ public class AuthorEndpoints {
     }
 
     public static Response updateAuthor(int id, Author author) {
-        String url = ENDPOINT + "/" + id;
+        TestLogger logger = TestLogger.getThreadLogger();
         logger.info("Updating author with ID: " + id);
+
+        String url = ENDPOINT + "/" + id;
 
         return given()
                 .contentType(ContentType.JSON)
@@ -65,8 +70,10 @@ public class AuthorEndpoints {
     }
 
     public static Response deleteAuthor(int id) {
-        String url = ENDPOINT + "/" + id;
+        TestLogger logger = TestLogger.getThreadLogger();
         logger.info("Deleting author with ID: " + id);
+
+        String url = ENDPOINT + "/" + id;
 
         return given()
                 .when()

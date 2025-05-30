@@ -55,6 +55,7 @@ public class BaseTest {
     @BeforeEach
     public void logTestStart(TestInfo testInfo) {
         logger = new TestLogger(this.getClass());
+        TestLogger.setThreadLogger(logger);
         logger.info("========== Starting Test: " + testInfo.getDisplayName() + " ==========");
     }
 

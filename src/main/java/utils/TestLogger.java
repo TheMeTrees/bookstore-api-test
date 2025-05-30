@@ -16,6 +16,24 @@ import java.time.LocalDateTime;
  */
 public class TestLogger {
 
+    private static final ThreadLocal<TestLogger> threadLocalLogger = new ThreadLocal<>();
+
+    /**
+     * Sets the TestLogger for the current thread.
+     * Called from BaseTest to initialize a logger per test class.
+     */
+    public static void setThreadLogger(TestLogger logger) {
+        threadLocalLogger.set(logger);
+    }
+
+    /**
+     * Gets the TestLogger instance associated with the current thread.
+     * Used from anywhere (e.g., BookEndpoints).
+     */
+    public static TestLogger getThreadLogger() {
+        return threadLocalLogger.get();
+    }
+
     /**
      * Enumeration of supported log levels.
      * Ordered by verbosity: ERROR < INFO < DEBUG
@@ -44,7 +62,7 @@ public class TestLogger {
                 logDir.mkdirs();
             }
 
-            File logFile = new File(logDir, className + ".log");
+            File logFile = new File(logDir, this.className + ".log");
             this.writer = new PrintWriter(new FileWriter(logFile, false));
         } catch (IOException e) {
             throw new RuntimeException("Failed to initialize logger for " + className, e);
