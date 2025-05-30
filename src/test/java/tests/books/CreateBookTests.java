@@ -5,33 +5,60 @@ import endpoints.BookEndpoints;
 import io.restassured.response.Response;
 import models.Book;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CreateBookTests extends BaseTest {
 
     @Test
-    public void createBook_shouldReturn200AndBookId() {
-        logger.info("Running happy path: create book");
+    public void createBook_shouldReturn200AndNewBook() {
+        logger.info("Scenario: Successfully add a new book with valid data");
 
-        Book book = new Book(0, "Test Title", "Test Desc", 100, "Excerpt",
-                "2025-01-01T00:00:00");
-        Response response = BookEndpoints.createBook(book);
+        Book requestBody = new Book(
+                8888838,
+                "New book",
+                "Good book",
+                200,
+                "What a great book",
+                "1998-01-13T00:00:00"
+        );
 
+        Response response = BookEndpoints.createBook(requestBody);
+
+        logger.debug("Response code: " + response.getStatusCode());
         logger.debug("Response: " + response.asPrettyString());
-        assertEquals(200, response.getStatusCode());
-        assertTrue(response.jsonPath().getInt("id") > 0);
+
+        assertEquals(200, response.getStatusCode(), "Expected status code 200 for created resource");
+
+        int createdId = response.jsonPath().getInt("id");
+        assertEquals(8888838, createdId, "Returned book ID should be 8888838");
+
+        String title = response.jsonPath().getString("title");
+        assertEquals("New book", title, "Returned title should match request");
+
+        logger.info("Book successfully created with ID: " + createdId);
     }
 
     @Test
     public void createBook_missingTitle_shouldReturn400() {
         logger.info("Running edge case: create book with missing title");
 
-        Book book = new Book(0, null, "Description", 100, "Excerpt",
-                "2025-01-01T00:00:00");
+        Book book = new Book(
+                8888838,
+                null,
+                "Description",
+                100,
+                "Excerpt",
+                "2025-01-01T00:00:00"
+        );
+
         Response response = BookEndpoints.createBook(book);
 
         logger.debug("Response code: " + response.getStatusCode());
-        assertTrue(response.getStatusCode() >= 400);
+        logger.debug("Response: " + response.asPrettyString());
+
+        assertEquals(400, response.getStatusCode(),
+                "Expected status code 400 for invalid request body");
+
+        logger.info("Validation error correctly returned for invalid book creation request.");
     }
 }

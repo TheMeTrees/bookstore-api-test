@@ -45,7 +45,7 @@ public class TestLogger {
             }
 
             File logFile = new File(logDir, className + ".log");
-            this.writer = new PrintWriter(new FileWriter(logFile, true));
+            this.writer = new PrintWriter(new FileWriter(logFile, false));
         } catch (IOException e) {
             throw new RuntimeException("Failed to initialize logger for " + className, e);
         }

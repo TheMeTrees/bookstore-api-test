@@ -19,6 +19,7 @@ public class BookEndpoints {
 
     public static Response getAllBooks() {
         logger.info("Sending GET request to fetch all books");
+        logger.info("Request URI: " + RestAssured.baseURI + ENDPOINT);
 
         return given()
                 .accept(ContentType.JSON)
@@ -31,6 +32,7 @@ public class BookEndpoints {
     public static Response getBookById(int id) {
         String url = ENDPOINT + "/" + id;
         logger.info("Fetching book by ID: " + id);
+        logger.info("Request URI: " + RestAssured.baseURI + ENDPOINT);
 
         return given()
                 .accept(ContentType.JSON)
@@ -39,6 +41,19 @@ public class BookEndpoints {
                 .then()
                 .extract().response();
     }
+
+    public static Response getBookById(String id) {
+        String url = ENDPOINT + "/" + id;
+        logger.info("Fetching book by ID (string): " + id);
+
+        return given()
+                .accept(ContentType.JSON)
+                .when()
+                .get(url)
+                .then()
+                .extract().response();
+    }
+
 
     public static Response createBook(Book book) {
         logger.info("Creating book: " + book.getTitle());
@@ -55,6 +70,7 @@ public class BookEndpoints {
     public static Response updateBook(int id, Book book) {
         String url = ENDPOINT + "/" + id;
         logger.info("Updating book with ID: " + id);
+        logger.debug("Updating book: " + book.getTitle());
 
         return given()
                 .contentType(ContentType.JSON)
@@ -68,6 +84,7 @@ public class BookEndpoints {
     public static Response deleteBook(int id) {
         String url = ENDPOINT + "/" + id;
         logger.info("Deleting book with ID: " + id);
+        logger.info("Request URI: " + RestAssured.baseURI + ENDPOINT);
 
         return given()
                 .when()
@@ -76,4 +93,15 @@ public class BookEndpoints {
                 .extract().response();
     }
 
+    public static Response deleteBook(String id) {
+        String url = ENDPOINT + "/" + id;
+        logger.info("Deleting book with ID: " + id);
+        logger.info("Request URI: " + RestAssured.baseURI + ENDPOINT);
+
+        return given()
+                .when()
+                .delete(url)
+                .then()
+                .extract().response();
+    }
 }

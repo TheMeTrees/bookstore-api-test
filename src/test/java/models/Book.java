@@ -76,7 +76,16 @@ public class Book {
 
     @Override
     public String toString() {
-        return String.format("Book{id=%d, title='%s', publishDate='%s'}", id, title, publishDate);
+        return String.format(
+                """
+                    id=%d,\s
+                    title='%s',\s
+                    description='%s', \s
+                    pageCount='%d', \s
+                    excerpt='%s', \s
+                    publishDate='%s'
+                """,
+                id, title, description, pageCount, excerpt, publishDate);
     }
 
 }

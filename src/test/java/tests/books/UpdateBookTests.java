@@ -11,27 +11,92 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UpdateBookTests extends BaseTest {
 
     @Test
-    public void updateExistingBook_shouldReturn200() {
-        logger.info("Running happy path: update book");
+    public void updateBook_withValidData_shouldReturn200AndUpdatedContent() {
+        int bookId = 456;
+        logger.info("Scenario: Successfully update book details with valid data for book ID: " + bookId);
 
-        Book updated = new Book(1, "Updated Title", "Updated Desc", 120, "Updated",
-                "2025-12-31T00:00:00");
-        Response response = BookEndpoints.updateBook(1, updated);
+        Book updatedBook = new Book(
+                bookId,
+                "Updated Title",
+                "Updated description",
+                152,
+                "Updated excerpt",
+                "2021-05-10T00:00:00"
+        );
+
+        logger.debug("Request: \n" + updatedBook.toString());
+
+        Response response = BookEndpoints.updateBook(bookId, updatedBook);
 
         logger.debug("Response: " + response.asPrettyString());
-        assertEquals(200, response.getStatusCode());
-        assertEquals("Updated Title", response.jsonPath().getString("title"));
+        logger.debug("Status: " + response.getStatusCode());
+
+        assertEquals(200, response.getStatusCode(), "Expected status code 200 after successful update");
+
+        String updatedTitle = response.jsonPath().getString("title");
+        assertEquals("Updated Title", updatedTitle, "Title in response should match updated value");
+
+        logger.info("Book ID " + bookId + " updated successfully with new title: " + updatedTitle);
     }
 
     @Test
-    public void updateNonExistentBook_shouldReturn404() {
-        logger.info("Running edge case: update non-existent book");
+    public void updateBook_withNonExistentId_shouldReturn404AndErrorMessage() {
+        int nonExistentId = -999999;
+        logger.info("Scenario: Attempt to update a book with non-existent ID: " + nonExistentId);
 
-        Book book = new Book(99999, "Fake", "Fake", 50, "Fake",
-                "2025-01-01T00:00:00");
-        Response response = BookEndpoints.updateBook(99999, book);
+        Book updatedBook = new Book(
+                nonExistentId,
+                "Updated Title",
+                "Updated description",
+                152,
+                "Updated excerpt",
+                "2021-05-10T00:00:00"
+        );
+
+        logger.debug("Request: \n" + updatedBook.toString());
+
+        Response response = BookEndpoints.updateBook(nonExistentId, updatedBook);
 
         logger.debug("Response code: " + response.getStatusCode());
-        assertEquals(404, response.getStatusCode());
+        logger.debug("Response body: " + response.asPrettyString());
+
+        assertEquals(404, response.getStatusCode(), "Expected 404 for updating a non-existent book");
+
+        String body = response.getBody().asString();
+        assertTrue(body.contains("Not Found"),
+                "Expected error message to contain 'Not found'");
+
+        logger.info("Verified 404 and error message for book ID: " + nonExistentId);
     }
+
+    @Test
+    public void updateBook_withEmptyTitle_shouldReturn400AndTitleError() {
+        int bookId = 15;
+        logger.info("Scenario: Attempt to update a book with an empty title for ID: " + bookId);
+
+        Book updatedBook = new Book(
+                bookId,
+                "",
+                "Updated description",
+                152,
+                "Updated excerpt",
+                "2021-05-10T00:00:00"
+        );
+
+        logger.debug("Request: \n" + updatedBook.toString());
+
+        Response response = BookEndpoints.updateBook(bookId, updatedBook);
+
+        logger.debug("Response code: " + response.getStatusCode());
+        logger.debug("Response body: " + response.asPrettyString());
+
+        assertEquals(400, response.getStatusCode(),
+                "Expected status code 400 for invalid request body");
+
+        String responseBody = response.getBody().asString();
+        assertTrue(responseBody.contains("title"), "Invalid request, 'Title' is missing");
+
+        logger.info("Validation error returned as expected for missing title during book update.");
+    }
+
 }
