@@ -1,0 +1,19 @@
+# Maven build output
+target/
+
+# Allure results and reports
+allure-results/
+allure-report/
+target/site/
+
+# IDE settings
+.idea/
+.vscode/
+
+# Logs
+*.log
+target/logs/
+
+# OS/system files
+.DS_Store
+Thumbs.db
