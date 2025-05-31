@@ -3,6 +3,7 @@ package tests.authors;
 import base.BaseTest;
 import endpoints.AuthorEndpoints;
 import endpoints.AuthorEndpoints;
+import io.qameta.allure.*;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +18,10 @@ import static org.junit.jupiter.api.Assertions.*;
  * Tests for GET /Authors endpoint
  * */
 
+@Epic("Authors API")
+@Feature("GET /Authors")
+@Story("Retrieve all Authors")
+@Severity(SeverityLevel.CRITICAL)
 @ExtendWith(LogAssertionErrorsRule.class)
 public class GetAllAuthorsTests extends BaseTest {
 

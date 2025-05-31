@@ -3,6 +3,7 @@ package tests.authors;
 import base.BaseTest;
 import endpoints.AuthorEndpoints;
 import endpoints.AuthorEndpoints;
+import io.qameta.allure.*;
 import io.restassured.response.Response;
 import models.Author;
 import models.Author;
@@ -16,6 +17,10 @@ import static org.junit.jupiter.api.Assertions.*;
  * Tests for PUT /Authors/{id} endpoint
  * */
 
+@Epic("Authors API")
+@Feature("PUT /Authors/{id}")
+@Story("Update an Author by id")
+@Severity(SeverityLevel.CRITICAL)
 @ExtendWith(LogAssertionErrorsRule.class)
 public class UpdateAuthorTests extends BaseTest {
 

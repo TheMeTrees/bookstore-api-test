@@ -2,6 +2,7 @@ package tests.books;
 
 import base.BaseTest;
 import endpoints.BookEndpoints;
+import io.qameta.allure.*;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +14,10 @@ import static org.junit.jupiter.api.Assertions.*;
  * Tests for DELETE /Books/{id} endpoint
  * */
 
+@Epic("Books API")
+@Feature("DELETE /Books/{id}")
+@Story("Delete a Book by id")
+@Severity(SeverityLevel.CRITICAL)
 @ExtendWith(LogAssertionErrorsRule.class)
 public class DeleteBookTests extends BaseTest {
 

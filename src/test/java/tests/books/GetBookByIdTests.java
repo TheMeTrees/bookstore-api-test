@@ -2,6 +2,7 @@ package tests.books;
 
 import base.BaseTest;
 import endpoints.BookEndpoints;
+import io.qameta.allure.*;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,10 @@ import static org.junit.jupiter.api.Assertions.*;
  * Tests for GET /Books/{id} endpoint
  * */
 
+@Epic("Books API")
+@Feature("GET /Books/{id}")
+@Story("Retrieve a Book by id")
+@Severity(SeverityLevel.CRITICAL)
 @ExtendWith(LogAssertionErrorsRule.class)
 public class GetBookByIdTests extends BaseTest {
 

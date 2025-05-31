@@ -2,6 +2,7 @@ package tests.books;
 
 import base.BaseTest;
 import endpoints.BookEndpoints;
+import io.qameta.allure.*;
 import io.restassured.response.Response;
 import models.Book;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,10 @@ import static org.junit.jupiter.api.Assertions.*;
  * Tests for POST /Books endpoint
  * */
 
+@Epic("Books API")
+@Feature("POST /Books")
+@Story("Create a book")
+@Severity(SeverityLevel.CRITICAL)
 @ExtendWith(LogAssertionErrorsRule.class)
 public class CreateBookTests extends BaseTest {
 

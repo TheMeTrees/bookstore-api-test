@@ -4,6 +4,7 @@ import base.BaseTest;
 import endpoints.AuthorEndpoints;
 import endpoints.AuthorEndpoints;
 import endpoints.AuthorEndpoints;
+import io.qameta.allure.*;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +16,10 @@ import static org.junit.jupiter.api.Assertions.*;
  * Tests for DELETE /Authors/{id} endpoint
  * */
 
+@Epic("Authors API")
+@Feature("DELETE /Authors/{id}")
+@Story("Delete an Author by id")
+@Severity(SeverityLevel.CRITICAL)
 @ExtendWith(LogAssertionErrorsRule.class)
 public class DeleteAuthorTests extends BaseTest {
 

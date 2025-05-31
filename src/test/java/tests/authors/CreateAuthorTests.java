@@ -7,6 +7,7 @@ import models.Author;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import utils.LogAssertionErrorsRule;
+import io.qameta.allure.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,10 +15,15 @@ import static org.junit.jupiter.api.Assertions.*;
  * Tests for POST /Authors endpoint
  * */
 
+@Epic("Authors API")
+@Feature("POST /Authors")
+@Story("Create an Author")
+@Severity(SeverityLevel.CRITICAL)
 @ExtendWith(LogAssertionErrorsRule.class)
 public class CreateAuthorTests extends BaseTest {
 
     // Happy paths
+
     @Test
     public void createAuthor_shouldReturn200AndAuthorId() {
         int authorId = 8888838;
