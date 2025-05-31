@@ -31,40 +31,28 @@ jobs:
       - name: Clean and Run Tests (env=dev)
         run: mvn clean test -Denv=dev -Dapi.version=/api/v1
 
-      - name: Download Previous Allure Report (if exists)
-        uses: dawidd6/action-download-artifact@v2
+      - name: Setup Allure History
+        uses: actions/checkout@v4.2.2
+        if: always()
+        continue-on-error: true
         with:
-          workflow: ci.yml
-          name: allure-report
-          path: prev-allure-report
-          if_no_artifact_found: ignore
-
-      - name: Restore Allure History
-        run: |
-          mkdir -p allure-results/history
-          if [ -d "prev-allure-report/history" ]; then
-            cp -r prev-allure-report/history allure-results/
-          fi
+          ref: gh-pages
+          path: gh-pages
 
       - name: Generate Allure Report
-        run: mvn allure:report
-
-      - name: Add .nojekyll to prevent GitHub Pages from breaking Allure
-        run: echo "" > target/site/allure-maven-plugin/.nojekyll
-
-      - name: Upload Allure Report Artifact
-        uses: actions/upload-artifact@v3
+        uses: simple-elf/allure-report-action@v1.11
+        if: always()
         with:
-          name: allure-report
-          path: target/site/allure-maven-plugin/
+          allure_results: target/allure-results
+          allure_history: allure-history
 
-      - name: Publish Allure Report to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Publish Allure Report
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4.0.0
         with:
-          github_token: ${{ secrets.GH_PAGES_TOKEN }}
-          publish_dir: ./target/site/allure-maven-plugin
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          force_orphan: true
+          publish_dir: allure-history
 
       - name: Upload Test Logs
         uses: actions/upload-artifact@v3
