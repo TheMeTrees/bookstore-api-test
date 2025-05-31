@@ -64,6 +64,5 @@ jobs:
       - name: Upload Test Logs
         uses: actions/upload-artifact@v3
         with:
-          name: maven-target
-          path: ./
-
+          name: test-logs
+          path: target/
