@@ -53,13 +53,13 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: allure-report
-          path: target/allure-maven-plugin/
+          path: target/site/allure-maven-plugin/
 
       - name: Publish Allure Report to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GH_PAGES_TOKEN }}
-          publish_dir: ./target/allure-maven-plugin
+          publish_dir: ./target/site/allure-maven-plugin
           publish_branch: gh-pages
           force_orphan: true
 
