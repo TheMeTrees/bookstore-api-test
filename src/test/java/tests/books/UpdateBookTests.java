@@ -107,3 +107,15 @@ public class UpdateBookTests extends BaseTest {
     }
 
 }
+
+/*
+ * NOTE:
+ * The following test scenarios have been outlined but are not implemented
+ * due to limitations of the FakeRestAPI. These include:
+ *
+ * - Validate that unchanged data does not get affected
+ * - Forbidden update attempt due to insufficient permissions
+ * - Unauthorized update attempt
+ * - Attempt to update with extra undefined fields
+ *
+ */

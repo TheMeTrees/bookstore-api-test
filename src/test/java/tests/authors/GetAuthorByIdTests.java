@@ -82,3 +82,12 @@ public class GetAuthorByIdTests extends BaseTest {
         logger.info("Validation error confirmed for non-numeric ID: " + invalidId);
     }
 }
+
+/*
+ * NOTE:
+ * The following test scenarios have been outlined but are not implemented
+ * due to limitations of the FakeRestAPI. These include:
+ *
+ * - Unauthorized access to author details or author list
+ * - Forbidden access due to insufficient permissions
+ */

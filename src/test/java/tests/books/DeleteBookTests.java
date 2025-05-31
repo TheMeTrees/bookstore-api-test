@@ -70,3 +70,14 @@ public class DeleteBookTests extends BaseTest {
         logger.info("Validation error confirmed for malformed book ID: " + invalidId);
     }
 }
+
+/*
+ * NOTE:
+ * The following test scenarios have been outlined but are not implemented
+ * due to limitations of the FakeRestAPI. These include:
+ *
+ * - Deleting a book with associated references
+ * - Forbidden deletion attempt due to insufficient permissions
+ * - Unauthorized attempt to delete a book
+ *
+ */

@@ -70,3 +70,14 @@ public class CreateBookTests extends BaseTest {
         logger.info("Validation error correctly returned for invalid book creation request.");
     }
 }
+
+/*
+ * NOTE:
+ * The following test scenarios have been outlined but are not implemented
+ * due to limitations of the FakeRestAPI. These include:
+ *
+ * - Validate that duplicate books are allowed or rejected
+ * - Unauthorized attempt to add a book
+ * - Forbidden access for user without permission
+ *
+ */

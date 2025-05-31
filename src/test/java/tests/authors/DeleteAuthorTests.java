@@ -72,3 +72,13 @@ public class DeleteAuthorTests extends BaseTest {
         logger.info("Validation error confirmed for malformed Author ID: " + invalidId);
     }
 }
+
+/*
+ * NOTE:
+ * The following test scenarios have been outlined but are not implemented
+ * due to limitations of the FakeRestAPI. These include:
+ *
+ * - Testing forbidden deletion attempts due to insufficient permissions
+ * - Testing unauthorized deletion attempts
+ * - Preventing deletion when the author is linked to existing books
+*/

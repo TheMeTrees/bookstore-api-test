@@ -69,3 +69,13 @@ public class CreateAuthorTests extends BaseTest {
         logger.info("Validation error correctly returned for invalid author creation request.");
     }
 }
+
+/*
+ * NOTE:
+ * The following test scenarios have been outlined but are not implemented
+ * due to limitations of the FakeRestAPI. These include:
+ *
+ * - Rejecting a duplicate author if duplicates are not allowed
+ * - Unauthorized attempt to add an author
+ * - Forbidden attempt to add an author due to insufficient permissions
+ */

@@ -102,3 +102,13 @@ public class UpdateAuthorTests extends BaseTest {
         logger.info("Validation error returned as expected for missing firstName during Author update.");
     }
 }
+
+/*
+ * NOTE:
+ * The following test scenarios have been outlined but are not implemented
+ * due to limitations of the FakeRestAPI. These include:
+ *
+ * - Forbidden update attempt due to insufficient permissions
+ * - Unauthorized update attempt
+ * - Attempt to update with unsupported fields (e.g., custom or unexpected attributes)
+ */

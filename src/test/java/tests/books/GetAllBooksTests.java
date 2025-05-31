@@ -69,3 +69,13 @@ public class GetAllBooksTests extends BaseTest {
         logger.info("Book validated for required fields.");
     }
 }
+
+/*
+ * NOTE:
+ * The following test scenarios have been outlined but are not implemented
+ * due to limitations of the FakeRestAPI. These include:
+ *
+ * - Unauthorized access attempt
+ * - Forbidden access due to insufficient permissions
+ *
+ */
