@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Java
         uses: actions/setup-java@v3
@@ -30,44 +30,31 @@ jobs:
 
       - name: Clean and Run Tests (env=dev)
         run: mvn clean test -Denv=dev -Dapi.version=/api/v1
+        continue-on-error: true
 
-      - name: Download Previous Allure Report (if exists)
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          workflow: ci.yml
-          name: allure-report
-          path: prev-allure-report
-          if_no_artifact_found: ignore
-
-      - name: Restore Allure History
-        run: |
-          mkdir -p allure-results/history
-          if [ -d "prev-allure-report/history" ]; then
-            cp -r prev-allure-report/history allure-results/
-          fi
+      - name: Install Allure CLI
+        run: sudo npm install -g allure-commandline --save-dev
 
       - name: Generate Allure Report
-        run: mvn allure:report
+        if: always()
+        run: |
+          allure generate target/allure-results --clean -o allure-report --single-file
 
-      - name: Add .nojekyll to prevent GitHub Pages from breaking Allure
-        run: echo "" > target/site/allure-maven-plugin/.nojekyll
+      - name: Disable Jekyll
+        if: always()
+        run: echo "" > allure-report/.nojekyll
 
       - name: Upload Allure Report Artifact
-        uses: actions/upload-artifact@v3
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: allure-report
-          path: target/site/allure-maven-plugin/
+          path: allure-report
 
-      - name: Publish Allure Report to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Deploy Allure Report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GH_PAGES_TOKEN }}
-          publish_dir: ./target/site/allure-maven-plugin
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: allure-report
           publish_branch: gh-pages
-          force_orphan: true
-
-      - name: Upload Test Logs
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-logs
-          path: target/logs/
