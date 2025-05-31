@@ -5,7 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
-import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * TestLogger is a lightweight logging utility that supports per-class log files,
@@ -16,24 +16,23 @@ import java.util.concurrent.ConcurrentLinkedDeque;
  * {@code -Dlog.level=INFO}</p>
  */
 public class TestLogger {
-
-
     private static final ThreadLocal<TestLogger> threadLocalLogger = new ThreadLocal<>();
-
-    private final ConcurrentLinkedDeque<String> messages = new ConcurrentLinkedDeque<>();
-    private final Thread loggerThread = new Thread(this::loggerLoop);
+    private final ConcurrentLinkedQueue<String> messages = new ConcurrentLinkedQueue<>();
     private boolean enabled = true;
 
-    public void log(String message) {
-        messages.offer(message);
-    }
-
+    /**
+     * Disables logging after all messages in the queue have been processed
+     * */
     public void setEnabledFalse() {
         while(!messages.isEmpty()) {
+            // Wait until all messages are processed
         }
         enabled = false;
     }
 
+    /**
+     * Continuously processes and logs messages from the queue while logging is enabled
+     * */
     private void loggerLoop() {
         while (this.enabled) {
             if (!messages.isEmpty()) {
@@ -59,14 +58,6 @@ public class TestLogger {
         return threadLocalLogger.get();
     }
 
-    /**
-     * Enumeration of supported log levels.
-     * Ordered by verbosity: ERROR < INFO < DEBUG
-     */
-    public enum LogLevel {
-        ERROR, INFO, DEBUG
-    }
-
     private final String className;
     private final PrintWriter writer;
     private final LogLevel currentLevel;
@@ -78,6 +69,9 @@ public class TestLogger {
      * @param className The class this logger is associated with
      */
     public TestLogger(Class<?> className) {
+        Thread loggerThread = new Thread(this::loggerLoop);
+        loggerThread.start();
+
         this.className = className.getSimpleName();
         this.currentLevel = resolveLogLevel();
 
@@ -88,11 +82,62 @@ public class TestLogger {
             }
 
             File logFile = new File(logDir, this.className + ".log");
-            this.writer = new PrintWriter(new FileWriter(logFile, false));
+            clearLogFile(logFile);
+            this.writer = new PrintWriter(new FileWriter(logFile, true));
         } catch (IOException e) {
             throw new RuntimeException("Failed to initialize logger for " + className, e);
         }
     }
+
+    //region Log levels
+
+    /**
+     * Enumeration of supported log levels.
+     * Ordered by verbosity: ERROR < INFO < DEBUG
+     */
+    public enum LogLevel {
+        ERROR, INFO, DEBUG
+    }
+
+    /**
+     * Logs a message at the INFO level.
+     *
+     * @param msg The message to log
+     */
+    public void info(String msg) {
+        messages.offer(msg);
+    }
+
+    /**
+     * Logs a message at the DEBUG level.
+     *
+     * @param msg The message to log
+     */
+    public void debug(String msg) {
+        messages.offer(msg);
+    }
+
+    /**
+     * Logs a message at the ERROR level.
+     *
+     * @param msg The message to log
+     */
+    public void error(String msg) {
+        messages.offer(msg);
+    }
+
+    //endregion Log levels
+
+    /**
+     * Closes the underlying writer and releases the file handle.
+     * Should be called at the end of each test.
+     */
+    public void close() {
+        writer.close();
+
+    }
+
+    //region Helpers
 
     /**
      * Resolves the current log level from the system property {@code log.level}.
@@ -112,33 +157,6 @@ public class TestLogger {
     }
 
     /**
-     * Logs a message at the INFO level.
-     *
-     * @param msg The message to log
-     */
-    public void info(String msg) {
-        _log(LogLevel.INFO, msg);
-    }
-
-    /**
-     * Logs a message at the DEBUG level.
-     *
-     * @param msg The message to log
-     */
-    public void debug(String msg) {
-        _log(LogLevel.DEBUG, msg);
-    }
-
-    /**
-     * Logs a message at the ERROR level.
-     *
-     * @param msg The message to log
-     */
-    public void error(String msg) {
-        _log(LogLevel.ERROR, msg);
-    }
-
-    /**
      * Writes the log entry if the specified level is equal to or higher than the current log level.
      *
      * @param level The log level of the message
@@ -154,10 +172,15 @@ public class TestLogger {
     }
 
     /**
-     * Closes the underlying writer and releases the file handle.
-     * Should be called at the end of each test.
-     */
-    public void close() {
-        writer.close();
+     * Deletes the given log file, if exists.
+     *
+     * @param logFile The log file
+     * */
+    private void clearLogFile(File logFile) {
+        if (logFile.exists()) {
+            logFile.delete();
+        }
     }
+
+    // endregion Helpers
 }

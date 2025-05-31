@@ -5,14 +5,16 @@ import endpoints.BookEndpoints;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
-
-import java.util.Map;
+import org.junit.jupiter.api.extension.ExtendWith;
+import utils.LogAssertionErrorsRule;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests for GET /Books/{id} endpoint
  * */
+
+@ExtendWith(LogAssertionErrorsRule.class)
 public class GetBookByIdTests extends BaseTest {
 
     @Test

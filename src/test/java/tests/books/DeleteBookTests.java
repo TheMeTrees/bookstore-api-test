@@ -4,13 +4,20 @@ import base.BaseTest;
 import endpoints.BookEndpoints;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import utils.LogAssertionErrorsRule;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Tests for DELETE /Books/{id} endpoint
+ * */
+
+@ExtendWith(LogAssertionErrorsRule.class)
 public class DeleteBookTests extends BaseTest {
 
     @Test
-    public void deleteBook_withValidId_shouldReturn204AndBeGone() {
+    public void deleteBook_withValidId_shouldReturn204AndBeDeleted() {
         int bookId = 15;
         logger.info("Scenario: Successfully delete a book by ID " + bookId);
 

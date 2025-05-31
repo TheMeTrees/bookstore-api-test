@@ -5,8 +5,16 @@ import endpoints.BookEndpoints;
 import io.restassured.response.Response;
 import models.Book;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import utils.LogAssertionErrorsRule;
+
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Tests for POST /Books endpoint
+ * */
+
+@ExtendWith(LogAssertionErrorsRule.class)
 public class CreateBookTests extends BaseTest {
 
     @Test
@@ -40,7 +48,7 @@ public class CreateBookTests extends BaseTest {
 
     @Test
     public void createBook_missingTitle_shouldReturn400() {
-        logger.info("Running edge case: create book with missing title");
+        logger.info("Scenario: Create book with missing title");
 
         Book book = new Book(
                 8888838,

@@ -4,15 +4,19 @@ import base.BaseTest;
 import endpoints.BookEndpoints;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import utils.LogAssertionErrorsRule;
+
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 /**
  * Tests for GET /Books endpoint
  * */
+
+@ExtendWith(LogAssertionErrorsRule.class)
 public class GetAllBooksTests extends BaseTest {
 
     @Test

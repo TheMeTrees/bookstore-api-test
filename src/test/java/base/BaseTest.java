@@ -23,6 +23,8 @@ public class BaseTest {
      */
     @BeforeAll
     public void setupFramework() {
+        logger = new TestLogger(this.getClass());
+
         ConfigManager config = ConfigManager.getInstance();
 
         String baseUrl = config.getProperty("base.url");
@@ -54,7 +56,6 @@ public class BaseTest {
      */
     @BeforeEach
     public void logTestStart(TestInfo testInfo) {
-        logger = new TestLogger(this.getClass());
         TestLogger.setThreadLogger(logger);
         logger.info("========== Starting Test: " + testInfo.getDisplayName() + " ==========");
     }
@@ -68,11 +69,11 @@ public class BaseTest {
     @AfterEach
     public void logTestEnd(TestInfo testInfo) {
         logger.info("========== Ending Test: " + testInfo.getDisplayName() + " ==========");
-        logger.close();
     }
 
     @AfterAll
     public void tearDownFramework() {
         logger.setEnabledFalse();
+        logger.close();
     }
 }

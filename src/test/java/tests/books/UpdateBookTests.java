@@ -5,22 +5,29 @@ import endpoints.BookEndpoints;
 import io.restassured.response.Response;
 import models.Book;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import utils.LogAssertionErrorsRule;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Tests for PUT /Books/{id} endpoint
+ * */
+
+@ExtendWith(LogAssertionErrorsRule.class)
 public class UpdateBookTests extends BaseTest {
 
     @Test
     public void updateBook_withValidData_shouldReturn200AndUpdatedContent() {
-        int bookId = 456;
+        int bookId = 21;
         logger.info("Scenario: Successfully update book details with valid data for book ID: " + bookId);
 
         Book updatedBook = new Book(
                 bookId,
                 "Updated Title",
-                "Updated description",
-                152,
-                "Updated excerpt",
+                "Description",
+                2100,
+                "Excerpt",
                 "2021-05-10T00:00:00"
         );
 
@@ -94,7 +101,7 @@ public class UpdateBookTests extends BaseTest {
                 "Expected status code 400 for invalid request body");
 
         String responseBody = response.getBody().asString();
-        assertTrue(responseBody.contains("title"), "Invalid request, 'Title' is missing");
+        assertTrue(responseBody.contains("title"), "Invalid request, 'title' is missing");
 
         logger.info("Validation error returned as expected for missing title during book update.");
     }
