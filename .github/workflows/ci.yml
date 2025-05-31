@@ -40,7 +40,7 @@ jobs:
           ref: gh-pages
           path: gh-pages
 
-      - name: Allure Report action from marketplace
+      - name: Allure Report action
         uses: simple-elf/allure-report-action@master
         if: always()
         id: allure-report
@@ -56,7 +56,7 @@ jobs:
         env:
           PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PUBLISH_BRANCH: gh-pages
-          PUBLISH_DIR: allure-history
+          PUBLISH_DIR: allure-report
 
       - name: Upload Test Logs
         uses: actions/upload-artifact@v3
