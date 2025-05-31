@@ -64,5 +64,6 @@ jobs:
       - name: Upload Test Logs
         uses: actions/upload-artifact@v3
         with:
-          name: test-logs
-          path: target/logs/
+          name: allure-report
+          path: allure-history
+
